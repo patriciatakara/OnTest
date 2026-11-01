@@ -47,23 +47,7 @@ public class GetAllExamsService {
 			return exams;
 		}
 	 
-	 
-	//  /**
-	//   * This method retrieves the content of all the exams stored in a database. It takes an ArrayList of exam names as input. (RETURN QUESTIONS FROM MULTIPLE EXAMES)
-	// 	* It uses the list of exam names returned by getExamsName() to create beans for each exam. So JSP pages can access properties using the getters methods. 
-	//   * @param exams is an ArrayList containing all the exams in the database. It will be used for iteration. 
-	//   * @return an ArrayList of NewExamBean objects containing all the questions, multiple choices, and correct answers from all exams in the database.
-	//   * @throws SQLException for errors occurring while accessing the database.
-	//   * @throws ClassNotFoundException for when DatabaseConnection.getConnection() method is unable to load the JDBC driver for the database.
-	//   */
-	//   public ArrayList <NewExamBean> getQuestionsFromAllExams(ArrayList<String> exams) throws SQLException, ClassNotFoundException {
-	//       if (exams == null) {
-  //   			throw new IllegalArgumentException("Exam list cannot be null.");
-  //       }
-  //       return getAllExamsDAO.getQuestionsFromAllExams(exams);
-  //   }
-	  
-	  
+		
 	  /**
 	   * This method retrieves all the questions, multiple choices, and correct answers from a single exam/table in the database. (RETURN QUESTIONS FROM ONE EXAM)
 	   * @param examSelected is a String containing the name of the exam table from which to retrieve the questions.

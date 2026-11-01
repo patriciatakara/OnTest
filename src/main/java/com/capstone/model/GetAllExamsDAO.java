@@ -9,7 +9,6 @@ import com.capstone.bean.NewExamBean;
 import com.capstone.serviceClasses.TableValidationService;
 
 /**
-
  * Handles database operations for retrieving exam names and exam questions.
  */
 public class GetAllExamsDAO {
@@ -47,47 +46,6 @@ public class GetAllExamsDAO {
     return exams;
   }
 
-  // /**
-  //  * Retrieves all questions from the specified exam tables.
-  //  * @param exams the names of the exam tables.
-  //  * @return a list of questions from all specified exams.
-  //  * @throws SQLException if a database access error occurs.
-  //  * @throws ClassNotFoundException if the JDBC driver cannot be loaded.
-  //  */
-  // public ArrayList<NewExamBean> getQuestionsFromAllExams(ArrayList<String> exams) throws SQLException, ClassNotFoundException {
-
-  //   ArrayList<NewExamBean> questions = new ArrayList<>();
-
-  //   try (Connection connection = DatabaseConnection.getConnection()) {
-
-  //     for (String exam : exams) {
-
-  //       // Validate the table before using its name in the SQL query.
-  //       TableValidationService.validateExamTables(exam);
-
-  //       String sql = "SELECT * FROM " + exam + " ORDER BY QID ASC";
-
-  //       try (PreparedStatement statement = connection.prepareStatement(sql);
-  //       ResultSet resultSet = statement.executeQuery()) {
-
-  //         while (resultSet.next()) {
-  //           NewExamBean question = new NewExamBean();
-  //           question.setTableName(exam);
-  //           question.setQid(resultSet.getString("QID"));
-  //           question.setQtext(resultSet.getString("QUESTION"));
-  //           question.setOpt1(resultSet.getString("OP1"));
-  //           question.setOpt2(resultSet.getString("OP2"));
-  //           question.setOpt3(resultSet.getString("OP3"));
-  //           question.setOpt4(resultSet.getString("OP4"));
-  //           question.setCorrectAnswer(
-  //           resultSet.getString("CORRECTANS"));
-  //           questions.add(question);
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return questions;
-  // }
 
   /**
    * Retrieves all questions from a single exam table.
