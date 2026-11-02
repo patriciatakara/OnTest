@@ -1,15 +1,15 @@
 package com.capstone.serviceClasses;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import com.capstone.bean.ReportBean;
-import com.capstone.model.DatabaseConnection;
+import com.capstone.model.GetAllGradesDAO;
+
 /**
- * @author Patricia Takara
+ * Handles service operations for retrieving exam grades.
  */
 public class GetAllGradesService {
+	
+	private final GetAllGradesDAO getAllGradesDAO = new GetAllGradesDAO();
 	
 	/**
 	 * This method retrieves only the names of all tables containing an exam's grades. 
@@ -20,36 +20,7 @@ public class GetAllGradesService {
 	 */
 	public ArrayList<String> getAllTablesGrades() throws SQLException, ClassNotFoundException {
 		
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet resultSet = null;
-		ArrayList<String> tableGrades = new ArrayList<>();
-		String tableName = " ";
-			 
-		try {
-			connection = DatabaseConnection.getConnection();
-			String sql = "select * from ALL_TABLESGRADES order by TABLE_NAME asc";
-			statement = connection.prepareStatement(sql);
-			resultSet = statement.executeQuery();
-				     
-			while(resultSet.next()) {
-			tableName = resultSet.getString("table_name");	
-			tableGrades.add(tableName);
-			}   
-		} catch (SQLException | ClassNotFoundException e) {
-			e.printStackTrace();
-		} finally {
-			 if (resultSet != null) {
-				resultSet.close();
-			}
-			if (statement != null) {
-				statement.close();
-			}
-			if (connection != null) {
-				connection.close();
-			}
-		}
-		return tableGrades;
+		return getAllGradesDAO.getAllTablesGrades();
 	}
 
 	
@@ -62,41 +33,7 @@ public class GetAllGradesService {
 	 */
 	public ArrayList<ReportBean> getGrades(String exam) throws SQLException, ClassNotFoundException {
 		
-	    Connection connection = null;
-	    PreparedStatement statement = null;
-	    ResultSet resultSet = null;
-	    ArrayList<ReportBean> reports = new ArrayList<>();
-	    
-	    try {
-	        connection = DatabaseConnection.getConnection();
-	        String sql = "select USERID, FIRSTNAME, LASTNAME, GRADE, LETTER, SUBMISSION from STUDENTS natural join " + exam + " ORDER BY userid ASC";
-	        statement = connection.prepareStatement(sql);
-	        resultSet = statement.executeQuery();
-	        while (resultSet.next()) {
-	        	ReportBean reportB = new ReportBean();
-	            reportB.setExamName(exam);
-	            reportB.setUserId(resultSet.getInt("USERID"));
-	            reportB.setFirst(resultSet.getString("FIRSTNAME"));
-	            reportB.setLast(resultSet.getString("LASTNAME"));
-	            reportB.setGrade(resultSet.getInt("GRADE"));
-	            reportB.setLetterGrade(resultSet.getString("LETTER"));
-	            reportB.setSubmissionDate(resultSet.getString("SUBMISSION"));
-	            reports.add(reportB);
-	        }  
-	    } catch (SQLException | ClassNotFoundException e) {
-			e.printStackTrace();
-	    } finally {
-		 	if (resultSet != null) {
-				resultSet.close();
-			}
-			if (statement != null) {
-				statement.close();
-			}
-			if (connection != null) {
-				connection.close();
-			}
-		}
-	    return reports;
+    return getAllGradesDAO.getGrades(exam);
 	}
 	
 	
@@ -109,49 +46,12 @@ public class GetAllGradesService {
 	 * @throws SQLException for errors occurring while accessing the database.
 	 * @throws ClassNotFoundException for when DatabaseConnection.getConnection() method is unable to load the JDBC driver for the database.
 	 */
-    public ArrayList<ReportBean> getGradesStudent(ArrayList<String> allTables, int id) throws SQLException, ClassNotFoundException {
-    	
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        ArrayList<ReportBean> grades = new ArrayList<>();
-        
-        try {
-            connection = DatabaseConnection.getConnection(); 
-            for (int i = 0; i <allTables.size(); i++) {
-                String table = allTables.get(i);
-                 
-                String sql ="select USERID, FIRSTNAME, LASTNAME, GRADE, LETTER, EXAM, SUBMISSION from STUDENTS natural join " + table + " where USERID = " + id + " order by USERID asc";
-                statement = connection.prepareStatement(sql);
-                resultSet = statement.executeQuery(); 
-                
-                while (resultSet.next()) {
-                    ReportBean grade = new ReportBean();
-                    grade.setExamName(allTables.get(i));
-                    grade.setUserId(resultSet.getInt("USERID"));
-                    grade.setFirst(resultSet.getString("FIRSTNAME"));
-                    grade.setLast(resultSet.getString("LASTNAME"));
-                    grade.setGrade(resultSet.getInt("GRADE"));
-                    grade.setLetterGrade(resultSet.getString("LETTER"));
-                    grade.setSubmissionDate(resultSet.getString("SUBMISSION"));
-                    grade.setExamName(resultSet.getString("EXAM"));
-                    grades.add(grade);
-                } 
-            }    
-        }catch (SQLException | ClassNotFoundException e) {
-		    e.printStackTrace();
-        } finally {
-		 	if (resultSet != null) {
-				resultSet.close();
-			}
-			if (statement != null) {
-				statement.close();
-			}
-			if (connection != null) {
-				connection.close();
-			}
+  public ArrayList<ReportBean> getGradesStudent(ArrayList<String> allTables, int id) throws SQLException, ClassNotFoundException {
+		
+		if (allTables == null) {
+			throw new IllegalArgumentException("Grade table list cannot be null.");
 		}
-        return grades;
-    }
+		return getAllGradesDAO.getGradesStudent(allTables, id);
+  }
 
 }
