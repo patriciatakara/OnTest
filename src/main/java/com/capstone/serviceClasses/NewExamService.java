@@ -1,15 +1,13 @@
 package com.capstone.serviceClasses;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import com.capstone.model.NewExamDAO;
 
-import com.capstone.model.DatabaseConnection;
 /**
- * @author Patricia Takara
+ * Handles service operations related to creating new exams.
  */
 public class NewExamService {
+
+  private final NewExamDAO newExamDAO = new NewExamDAO();	
 
 	/**
 	 * This method checks if an exam name already exists on the database. If there is a table with the same name as the examName 
@@ -18,37 +16,9 @@ public class NewExamService {
 	 * @return the count of tables with the same name as the examName variable value.
 	 * @throws SQLException for errors occurring while accessing the database.
 	 */
-	public int checkExamName(String examName) throws SQLException {
-	
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet resultSet = null;
-		String tableName = examName.toUpperCase();
-		int count=0;
-
-		try {
-		    connection = DatabaseConnection.getConnection();
-		    String sql = "select count(*) from ALL_TABLES WHERE TABLE_NAME = '" +tableName+ "'" ;
-		 	statement = connection.prepareStatement(sql);
-			resultSet= statement.executeQuery();
-			resultSet.next();
-			count = resultSet.getInt(1);
+	public int checkExamName(String examName) throws SQLException, ClassNotFoundException {
 		
-		}catch (SQLException | ClassNotFoundException e) {
-			e.printStackTrace();
-		  
-		} finally {
-			if (resultSet != null) {
-				resultSet.close();
-			}
-			if (statement != null) {
-				statement.close();
-			}
-			if (connection != null) {
-				connection.close();
-			}
-		}
-		return count;
+		return newExamDAO.checkExamName(examName);
 	}
 
 	
@@ -64,27 +34,7 @@ public class NewExamService {
 	 */
 	public int createNewTable(String name) throws SQLException, ClassNotFoundException {
 		
-	    Connection connection = null;
-	    String examName = name;
-	    int updateCount = 0;
-	    
-	    try {
-	        connection = DatabaseConnection.getConnection();
-	        CallableStatement cs = connection.prepareCall("{ call sp_newTable(?) }");
-	        cs.setString(1, examName.toUpperCase());
-	        boolean hasResult = cs.execute();
-	        
-	        if (!hasResult) {
-	            updateCount = cs.getUpdateCount();
-	        }
-	        cs.close();
-	        
-	    } finally {
-	        if (connection != null) {
-	            connection.close();
-	        }
-	    }
-	    return updateCount;
+		return newExamDAO.createNewTable(name);
 	}
 
 }

@@ -44,7 +44,7 @@ public class CreateExam extends HttpServlet {
 					e.printStackTrace();
 				}		 
 			}		
-		} catch (SQLException e) {
+		} catch (SQLException | ClassNotFoundException e ) {
 			e.printStackTrace();
 		}
 	}
