@@ -60,6 +60,22 @@ This page displays a form to edit a user's information on the database.
   </form>
 </div>
 
+<!-- Alert message: in case a field is left in blank. -->
+<c:if test="${sessionScope.nullForm == 'Yes'}">
+    <script type="text/javascript">
+        alert("Please, fill out all the fields.");
+    </script>
+    <c:remove var="nullForm" scope="session" />
+</c:if>
+
+<!-- Alert message: in case the password does not meet the requirements. -->
+<c:if test="${sessionScope.invalidPassword == 'Yes'}">
+	<script type="text/javascript">
+		alert("Password must have at least 5 characters and at least 1 special character.");
+	</script>
+	<c:remove var="invalidPassword" scope="session" />
+</c:if>
+
 
 <!-- To prevent the user to go back to the previous page after logging out of the system -->
 <%

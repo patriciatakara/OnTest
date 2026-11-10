@@ -1,10 +1,12 @@
 package com.capstone.controller;
 import java.io.IOException;
 import com.capstone.bean.RegisterBean;
+import com.capstone.serviceClasses.PasswordValidationService;
 import com.capstone.serviceClasses.RegistrationService;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+
 /**
  * @author Patricia Takara
  * @implSpec This servlet registers a new user(student) into the system.
@@ -18,6 +20,7 @@ import javax.servlet.http.*;
 public class Registration extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
+	PasswordValidationService passwordService = new PasswordValidationService();
   
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -32,14 +35,23 @@ public class Registration extends HttpServlet {
 		|| last ==null || last.trim().isEmpty()
 		|| email ==null || email.trim().isEmpty()
 		|| password ==null || password.trim().isEmpty()){
-			
+		
 			HttpSession session = request.getSession();
     	session.setAttribute("nullForm", "Yes");
 
 			response.sendRedirect(request.getContextPath() + "/jsp/Forms/RegistrationForm.jsp");
 			return;
 		}
-		
+
+		if (!passwordService.isValidPassword(password)) {
+
+			HttpSession session = request.getSession();
+			session.setAttribute("invalidPassword", "Yes");
+
+			response.sendRedirect(request.getContextPath() + "/jsp/Forms/RegistrationForm.jsp");
+			return;
+		}
+
 		RegisterBean newStudent = new RegisterBean(first, last, email, password);
 
 		try {

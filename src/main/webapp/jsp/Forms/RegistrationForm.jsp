@@ -57,48 +57,28 @@ This is the registration page for students to register and have access to the ap
 
 	<!-- Alert message: in case the email entered already exists in the application's database. -->
 	<c:if test="${sessionScope.getAlert == 'Yes'}">
-			<script type="text/javascript">
-					alert("Email already exist. Try again or go to login.");
-			</script>
-			<c:remove var="getAlert" scope="session" />
+		<script type="text/javascript">
+			alert("Email already exist. Try again or go to login.");
+		</script>
+		<c:remove var="getAlert" scope="session" />
 	</c:if>
 
 	<!-- Alert message: in case a blank field is submitted. -->
 	<c:if test="${sessionScope.nullForm == 'Yes'}">
-			<script type="text/javascript">
-					alert("Please, fill out all the fields.");
-			</script>
-			<c:remove var="nullForm" scope="session" />
+		<script type="text/javascript">
+			alert("Please, fill out all the fields.");
+		</script>
+		<c:remove var="nullForm" scope="session" />
+	</c:if>
+	
+	<!-- Alert message: in case the password does not meet the requirements. -->
+	<c:if test="${sessionScope.invalidPassword == 'Yes'}">
+		<script type="text/javascript">
+			alert("Password must have at least 5 characters and at least 1 special character.");
+		</script>
+		<c:remove var="invalidPassword" scope="session" />
 	</c:if>
 
 	</div>
-
-	<script>
-		const registrationForm = document.getElementById("editForm2");
-    const passwordInput = document.getElementById("password");
-    const passwordError = document.getElementById("passwordError");
-
-    registrationForm.addEventListener("submit", function(event) {
-        const password = passwordInput.value;
-        const hasSpecialCharacter = /[^a-zA-Z0-9]/.test(password);
-
-        if (password.length < 5 || !hasSpecialCharacter) {
-            event.preventDefault();
-            passwordError.style.display = "block";
-            passwordInput.focus();
-        } else {
-            passwordError.style.display = "none";
-        }
-    });
-
-    passwordInput.addEventListener("input", function() {
-        const password = passwordInput.value;
-        const hasSpecialCharacter = /[^a-zA-Z0-9]/.test(password);
-
-        if (password.length >= 5 && hasSpecialCharacter) {
-            passwordError.style.display = "none";
-        }
-    });
-	</script>
 </body>
 </html>

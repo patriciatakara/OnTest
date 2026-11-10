@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import com.capstone.bean.RegisterBean;
 import com.capstone.serviceClasses.GetUsersService;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,13 +19,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "AdminUpdateUsers", urlPatterns = { "/AdminUpdateUsers" })
 public class AdminUpdateUsers extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
 	
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		System.out.println("AdminUpdateUsers servlet was called");
-
 
 		ArrayList<RegisterBean> table1 = new ArrayList<>();
 		ArrayList<RegisterBean> table2 = new ArrayList<>();
@@ -36,20 +32,12 @@ public class AdminUpdateUsers extends HttpServlet {
 			table1 = usersService.getStudents();
 			table2 = usersService.getFaculty();
 
-			
-
-			System.out.println("Students retrieved: " + table1.size());
-      System.out.println("Faculty retrieved: " + table2.size());
-
-
-
 			request.setAttribute("resultSet", table1); 
 			request.setAttribute("resultSet2", table2); 
 			 
 			// Forward both user lists to the administrator update page.
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/Admin/UpdateUsers.jsp");
 			dispatcher.forward(request, response);
-			
 			
 		 } catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();

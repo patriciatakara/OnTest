@@ -88,6 +88,14 @@ This page displays a form to add a new user into the database.
     <c:remove var="nullForm" scope="session" />
 </c:if>
 
+<!-- Alert message: in case the password does not meet the requirements. -->
+<c:if test="${sessionScope.invalidPassword == 'Yes'}">
+	<script type="text/javascript">
+		alert("Password must have at least 5 characters and at least 1 special character.");
+	</script>
+	<c:remove var="invalidPassword" scope="session" />
+</c:if>
+
 
 
 <!-- To prevent the user to go back to the previous page after logging out of the system. -->

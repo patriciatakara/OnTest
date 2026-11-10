@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import com.capstone.bean.RegisterBean;
+import com.capstone.serviceClasses.PasswordValidationService;
 import com.capstone.serviceClasses.RegistrationService;
 /**
  * @author Patricia Takara
@@ -17,9 +17,10 @@ import com.capstone.serviceClasses.RegistrationService;
  */
 @WebServlet("/AdminAddUserButton")
 public class AdminAddUserButton extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
-    
-	
+	private final PasswordValidationService passwordService = new PasswordValidationService();
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String userTable = request.getParameter("userTable");
@@ -28,26 +29,41 @@ public class AdminAddUserButton extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 
-		 // TEMPORARY DEBUGGING: print the submitted form values
-    System.out.println("userTable = [" + userTable + "]");
-    System.out.println("first = [" + first + "]");
-    System.out.println("last = [" + last + "]");
-    System.out.println("email = [" + email + "]");
-    System.out.println("password is empty = "
-            + (password == null || password.trim().isEmpty()));
 
+		// Check whether any required field is empty.
+		if (first == null || first.trim().isEmpty()
+		|| last == null || last.trim().isEmpty()
+		|| email == null || email.trim().isEmpty()
+		|| password == null || password.trim().isEmpty()) {
 
+			HttpSession session = request.getSession();session.setAttribute("nullForm", "Yes");
+
+			response.sendRedirect(request.getContextPath() + "/jsp/Admin/AddUserForm.jsp?type=" + userTable);
+			return;
+		}
+
+		// Check whether the password meets the requirements.
+		if (!passwordService.isValidPassword(password)) {
+
+			HttpSession session = request.getSession();session.setAttribute("invalidPassword", "Yes");
+
+			response.sendRedirect(request.getContextPath() + "/jsp/Admin/AddUserForm.jsp?type=" + userTable);
+			return;
+		}
+
+		// Create a new RegisterBean object with the provided user information.
 		RegisterBean newStudent = new RegisterBean(first, last, email, password);
 		
 		try {
+			// Create an instance of the RegistrationService to handle user registration.
 			RegistrationService registrationService = new RegistrationService();
-
+			
+			// Check if the user already exists in the database.
 			if (registrationService.checkExistUser(email, userTable)) {
 				HttpSession session = request.getSession();
 				session.setAttribute("getAlert1", "Yes");
 				response.sendRedirect(request.getContextPath() + "/jsp/Admin/AddUserForm.jsp");
 			} else {
-				
 				// Register the new user in the selected table and notify the admin on success.
 				if (RegistrationService.addUser(newStudent, userTable)) {
 					HttpSession session = request.getSession();
@@ -64,4 +80,5 @@ public class AdminAddUserButton extends HttpServlet {
 			e.printStackTrace();
 		}	
 	}
+	
 }
