@@ -17,40 +17,40 @@ This is the login page for faculty members to access the application system.
 <body>
 <div class="entirePageFacultyLogin">
 
-<!-- Menu bar -->
-<ul>
-	<li><a href="${pageContext.request.contextPath}/index.jsp">Home</a></li>
-	<li><a href="${pageContext.request.contextPath}/jsp/Forms/StudentLoginForm.jsp">Student Login</a></li>
-	<li><a href="${pageContext.request.contextPath}/jsp/Forms/RegistrationForm.jsp">Registration</a></li>
-	<li><a href="${pageContext.request.contextPath}/jsp/Forms/FacultyLoginForm.jsp"class="active">Faculty</a></li>
-	<li ><a href="${pageContext.request.contextPath}/jsp/Forms/AdminLoginForm.jsp">ADMIN</a></li>
-</ul>
+	<!-- Menu bar -->
+	<ul>
+		<li><a href="${pageContext.request.contextPath}/index.jsp">Home</a></li>
+		<li><a href="${pageContext.request.contextPath}/jsp/Forms/StudentLoginForm.jsp">Student Login</a></li>
+		<li><a href="${pageContext.request.contextPath}/jsp/Forms/RegistrationForm.jsp">Registration</a></li>
+		<li><a href="${pageContext.request.contextPath}/jsp/Forms/FacultyLoginForm.jsp"class="active">Faculty</a></li>
+		<li ><a href="${pageContext.request.contextPath}/jsp/Forms/AdminLoginForm.jsp">ADMIN</a></li>
+	</ul>
 
-<!-- Login form -->
-<div class="formCenter3" >
-	<h2 style="color:white">FACULTY ONLY</h2>
+	<!-- Login form -->
+	<div class="formCenter3" >
+		<h2 style="color:white">FACULTY ONLY</h2>
 
-	<div class="editForm2" style="padding:45px">
-	<form method = "post" action="${pageContext.request.contextPath}/FacultyLogin">
-		<div class="formRow">	
-			 <input  type="email" name="facemail" placeholder= "Enter your email" required>
+		<div class="editForm2" style="padding:45px">
+		<form method = "post" action="${pageContext.request.contextPath}/FacultyLogin">
+			<div class="formRow">	
+				<input  type="email" name="facemail" placeholder= "Enter your email" required>
+			</div>	
+			<div class="formRow"> 		
+				<input type="password" name="facpassword" placeholder= "Enter your password" required>
+			</div>	
+			<input class="signButton" type="submit" value="Sign In">
+		</form>
 		</div>	
-		<div class="formRow"> 		
-		 	<input type="password" name="facpassword" placeholder= "Enter your password" required>
-		</div>	
-		<input class="signButton" type="submit" value="Sign In">
-	</form>
-	</div>	
-</div>
+	</div>
 
 
-<!-- Alert message: in case login fails. -->
-<c:if test="${sessionScope.getAlert == 'Yes'}">
-    <script type="text/javascript">
-        alert("Username/password incorrect. Please try again.");
-    </script>
-    <c:remove var="getAlert" scope="session" />
-</c:if>
+	<!-- Alert message: in case login fails. -->
+	<c:if test="${sessionScope.getAlert == 'Yes'}">
+			<script type="text/javascript">
+					alert("Username/password incorrect. Please try again.");
+			</script>
+			<c:remove var="getAlert" scope="session" />
+	</c:if>
 
 </div>
 </body>

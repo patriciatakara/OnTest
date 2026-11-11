@@ -15,7 +15,7 @@ This is the login page for students to access the application system.
 </head>
 
 <body>
-<div class="entirePageRegistration">
+<div class="entirePageStudent">
 
 <!-- Menu bar -->
 <ul>

@@ -15,7 +15,7 @@ This is the login page for administrators to access the application system.
 </head>
 
 <body>
-<div class="entirePageRegistration">
+<div class="entirePageAdmin">
 
 <!-- Menu bar -->
 <ul>
